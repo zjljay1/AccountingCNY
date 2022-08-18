@@ -3,11 +3,11 @@
     <div class="form">
       <h1>LOGIN</h1>
       <div class="user">
-        <img src="../assets/img/username.png" />
+        <img src="../../assets/img/username.png" />
         <input v-model="data.name" type="text" placeholder="Username" />
       </div>
       <div class="pass">
-        <img src="../assets/img/password.png" />
+        <img src="../../assets/img/password.png" />
         <input v-model="data.pws" type="text" placeholder="Password" />
       </div>
       <div class="enter">
@@ -19,8 +19,9 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
-import { login } from "../axios/index";
+import { login } from "../../axios/index";
 import { reactive } from "vue";
 import router from "@/router";
 
@@ -60,7 +61,7 @@ img {
   width: 400px;
   background-color: #ffffff;
   border-radius: 30px;
-  box-shadow: 10px 10px 5px #9c9b99;
+  /* box-shadow: 10px 10px 5px #9c9b99; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -70,6 +71,7 @@ img {
 .form h1 {
   margin-bottom: 70px;
   font-size: 50px;
+  color: #000000;
 }
 .user,
 .pass {

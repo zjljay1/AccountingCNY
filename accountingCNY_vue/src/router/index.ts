@@ -1,23 +1,21 @@
+/* eslint-disable no-undef */
 import { createRouter, createWebHistory } from "vue-router";
-import login from "../rou-vue/login.vue";
-import regsiter from "../rou-vue/regsiter.vue";
-import index from "../rou-vue/index.vue";
-// import { login } from "../axios/index";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
+      path: "/login",
       name: "login",
-      component: login,
+      component: () => import("../rou-vue/login/login.vue"),
       meta: {
         hideBreadcrumb: true,
       },
     },
+    { path: "/", redirect: "/login" },
     {
       path: "/regsiter",
       name: "regsiter",
-      component: regsiter,
+      component: () => import("../rou-vue/login/regsiter.vue"),
       meta: {
         hideBreadcrumb: true,
       },
@@ -25,7 +23,34 @@ const router = createRouter({
     {
       path: "/index",
       name: "index",
-      component: index,
+      component: () => import("../rou-vue/index/index.vue"),
+    },
+    {
+      path: "/bill",
+      name: "bill",
+      component: () => import("../rou-vue/index/bill.vue"),
+    },
+    {
+      path: "/setUp",
+      name: "setUp",
+      component: () => import("../rou-vue/index/set-up.vue"),
+    },
+    {
+      path: "/add",
+      name: "add",
+      component: () => import("../rou-vue/index/add.vue"),
+      children: [
+        {
+          path: "pay",
+          name: "pay",
+          component: () => import("../rou-vue/add/pay.vue"),
+        },
+        {
+          path: "revenue",
+          name: "revenue",
+          component: () => import("../rou-vue/add/revenue.vue"),
+        },
+      ],
     },
   ],
 });
@@ -56,4 +81,5 @@ router.beforeEach((_to, _from, _next) => {
     }
   }
 });
+
 export default router;

@@ -3,15 +3,15 @@
     <div class="form">
       <h1>REGSITER</h1>
       <div class="user">
-        <img src="../assets/img/username.png" />
+        <img src="../../assets/img/username.png" />
         <input id="name" type="text" placeholder="Username" />
       </div>
       <div class="pass">
-        <img src="../assets/img/password.png" />
+        <img src="../../assets/img/password.png" />
         <input id="pws" type="text" placeholder="Password" />
       </div>
       <div class="pass">
-        <img src="../assets/img/手机.png" />
+        <img src="../../assets/img/手机.png" />
         <input id="pws" type="text" placeholder="phone" />
       </div>
       <div class="enter">
@@ -34,7 +34,7 @@ img {
   width: 400px;
   background-color: #ffffff;
   border-radius: 30px;
-  box-shadow: 10px 10px 5px #9c9b99;
+  /* box-shadow: 10px 10px 5px #9c9b99; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -44,6 +44,7 @@ img {
 .form h1 {
   margin-bottom: 70px;
   font-size: 50px;
+  color: #000000;
 }
 .user,
 .pass {
