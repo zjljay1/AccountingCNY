@@ -14,7 +14,7 @@
 
 body {
   min-height: 100vh;
-  color: #ECF0F8;
+  color: #3e4043;
   background: var(--color-background);
   transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
@@ -24,9 +24,13 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #ffffff;
   /* background-color: #3b4d4d;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center; */
+}
+a{
+  text-decoration: none;
 }

@@ -3,11 +3,11 @@
     <div class="form">
       <h1>LOGIN</h1>
       <div class="user">
-        <img src="../../assets/img/username.png" />
+        <img src="../../assets/img/login-img/username.png" />
         <input v-model="data.name" type="text" placeholder="Username" />
       </div>
       <div class="pass">
-        <img src="../../assets/img/password.png" />
+        <img src="../../assets/img/login-img/password.png" />
         <input v-model="data.pws" type="text" placeholder="Password" />
       </div>
       <div class="enter">

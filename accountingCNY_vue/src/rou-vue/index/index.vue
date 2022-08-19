@@ -14,12 +14,12 @@
       </div>
       <!-- 首页收入 支出展示 -->
       <div class="t_bot">
-        <div class="income">
+        <div class="income text-white">
           <span>本月支出（￥）</span>
           <h1>0</h1>
         </div>
         <p>|</p>
-        <div class="spend">
+        <div class="spend text-white">
           <span>本月收入（￥）</span>
           <h1>0</h1>
         </div>
@@ -76,7 +76,7 @@ import { Tools, Histogram, Plus } from "@element-plus/icons-vue";
   height: 100vh;
 }
 .top {
-  background-color: #809cf9;
+  background-color: #7797ff;
   /* height: 210px; */
   flex: 3;
 }
@@ -85,7 +85,7 @@ import { Tools, Histogram, Plus } from "@element-plus/icons-vue";
   text-align: center;
 }
 .bot {
-  background-color: #3d3e52;
+  /* background-color: #3d3e52; */
   flex: 7;
 }
 .t_top {
