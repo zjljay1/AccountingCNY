@@ -11,6 +11,8 @@ public interface userMapper {
     @Select("select * from user where name=#{name} and password=#{password}")
     user login(user user);
 
-
+    //根据name查询
+    @Select("select id from user where name=#{name}")
+    int getId(String name);
 
 }

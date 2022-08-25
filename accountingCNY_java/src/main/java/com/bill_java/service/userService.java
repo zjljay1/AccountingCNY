@@ -8,5 +8,6 @@ public interface userService {
     //登录
     boolean login(user user);
 
-
+    // 根据name查询
+    int getId(String name);
 }

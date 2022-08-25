@@ -27,6 +27,16 @@ public class userController {
         }
     }
 
+    //根据姓名查询id
+    @GetMapping("/getId/{name}")
+    public Result getname_id(@PathVariable("name") String name){
+        int id = userService.getId(name);
+        if(id>=1){
+            return Result.succ(id);
+        }
+        return Result.succ("查询失败");
+    }
+
 
 
 }

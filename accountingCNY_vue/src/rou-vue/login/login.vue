@@ -21,22 +21,27 @@
 </template>
 
 <script setup lang="ts">
-import { login } from "../../axios/index";
+import { login, userId } from "../../axios/index";
 import { reactive } from "vue";
 import router from "@/router";
+import store from "@/stores/index";
 
 const data = reactive({ name: "", pws: "" });
-
+const str = store();
 const fa = reactive({
   //登录接口
   dpush() {
     const da = { name: data.name, password: data.pws };
     login(da)
       .then((res) => {
-        console.log(data);
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.code < 300) {
           localStorage.setItem("name", data.name);
+          userId(data.name)
+            .then((res) => {
+              localStorage.setItem("userId", res.data.data);
+            })
+            .catch();
           router.push({
             //编程式路由
             name: "index",
@@ -57,8 +62,8 @@ img {
   width: 40px;
 }
 .form {
-  height: 400px;
-  width: 400px;
+  height: 100vh;
+  /* width: 400px; */
   background-color: #ffffff;
   border-radius: 30px;
   /* box-shadow: 10px 10px 5px #9c9b99; */

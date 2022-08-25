@@ -7,14 +7,16 @@
       <div>
         <el-row>
           <el-button type="danger" color="#fff" round>
-            <Plus style="color: #111; width: 20px" />
+            <router-link to="/sort"
+              ><Setting style="color: #111; width: 20px"
+            /></router-link>
           </el-button>
         </el-row>
       </div>
     </div>
     <!-- 支出收入区域 -->
     <div>
-      <el-tabs type="border-card" stretch class="flex flex-col">
+      <el-tabs v-model="first" type="border-card" stretch class="flex flex-col">
         <el-tab-pane label="支出" name="first">
           <spend />
         </el-tab-pane>
@@ -23,15 +25,21 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+    <!-- 账单信息区域 -->
+    <div>
+      <news />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
-import { Plus } from "@element-plus/icons-vue";
+import { Plus, Setting } from "@element-plus/icons-vue";
 import { CloseBold } from "@element-plus/icons-vue";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import income from "./components/income.vue";
 import spend from "./components/spend.vue";
 import router from "@/router";
+import news from "./components/news.vue";
+const first = ref("first");
 const atavisn = () => {
   router.push({
     name: "index",

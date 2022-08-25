@@ -22,4 +22,8 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  // server: {
+  //   host: "192.168.0.108", // 本机的局域网IP
+  //   port: 8080, // 端口号，一般情况下为8080
+  // },
 });

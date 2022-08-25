@@ -18,4 +18,9 @@ public class userSerivceImpl implements userService {
         user login = userMapper.login(user);
         return login!=null;
     }
+
+    @Override
+    public int getId(String name) {
+        return userMapper.getId(name);
+    }
 }

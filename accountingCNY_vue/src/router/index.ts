@@ -39,18 +39,12 @@ const router = createRouter({
       path: "/add",
       name: "add",
       component: () => import("../rou-vue/index/add.vue"),
-      children: [
-        {
-          path: "pay",
-          name: "pay",
-          component: () => import("../rou-vue/add/pay.vue"),
-        },
-        {
-          path: "revenue",
-          name: "revenue",
-          component: () => import("../rou-vue/add/revenue.vue"),
-        },
-      ],
+      children: [],
+    },
+    {
+      path: "/sort",
+      name: "sort",
+      component: () => import("../rou-vue/index/sort.vue"),
     },
   ],
 });
