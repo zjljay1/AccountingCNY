@@ -1,7 +1,9 @@
 package com.bill_java.mapper;
 
 import com.bill_java.entity.amount;
+import com.bill_java.entity.category;
 import com.bill_java.entity.user;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -32,9 +34,15 @@ public interface billMapper {
     int addbill(amount amount);
 
     //查询用户账单信息
-    @Select("select id amount,amount_time,category_id,note from amount where user_id=#{id}")
+    @Select("select * from amount where user_id=#{id}")
     List<amount> getAll(int id);
 
+    //删除用户信息
+    @Delete("delete from amount where id=#{id}")
+    int deleteid(int id);
 
+    //添加页面数据查询
+    @Select("select * from category")
+    List<category> getCateAll();
 
 }

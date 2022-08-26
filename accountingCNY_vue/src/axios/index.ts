@@ -41,23 +41,18 @@ export const getAll = (id: Number) => {
   });
 };
 
-// export const get = () => {
-//   return Service({
-//     url: "/index/get",
-//     method: "get",
-//   });
-// };
+//根据用户id删除数据
+export const deleteId = (id: Number) => {
+  return Service({
+    url: `/bill/deleteId/${id}`,
+    method: "delete",
+  });
+};
 
-// export function getAllAndroidPlugins() {
-//   return Service({
-//     url: "/manager/getAndroidPlugin ",
-//     method: "get",
-//   });
-// }
-// export function post(data) {
-//   return Service({
-//     url: "/index/post",
-//     data: JSON.stringify(data),
-//     method: "post",
-//   });
-// }
+//添加页面数据查询
+export const getCateAll = () => {
+  return Service({
+    url: "/bill/getCate",
+    method: "get",
+  });
+};

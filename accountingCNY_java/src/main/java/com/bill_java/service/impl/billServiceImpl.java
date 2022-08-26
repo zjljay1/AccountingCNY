@@ -1,6 +1,7 @@
 package com.bill_java.service.impl;
 
 import com.bill_java.entity.amount;
+import com.bill_java.entity.category;
 import com.bill_java.mapper.billMapper;
 import com.bill_java.service.billService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,15 @@ public class billServiceImpl implements billService {
     @Override
     public List<amount> getAll(int id) {
         return billMapper.getAll(id);
+    }
+
+    @Override
+    public int deleteid(int id) {
+        return billMapper.deleteid(id);
+    }
+
+    @Override
+    public List<category> getCateAll() {
+         return  billMapper.getCateAll();
     }
 }

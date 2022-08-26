@@ -1,5 +1,3 @@
-<!-- eslint-disable vue/no-template-shadow -->
-<!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
   <!-- 首页布局 -->
   <el-container class="home">
@@ -31,8 +29,9 @@
     <el-main class="bot">
       <!-- 首页账单详情展示区域 -->
       <div class="ins">
-        <p v-if="flag">本月未开始记账<br />点击加号，开始记账</p>
-        <!-- <button @click="zs">点击</button> -->
+        <p v-if="flag" class="flex justify-center">
+          本月未开始记账<br />点击加号，开始记账
+        </p>
         <div v-for="(value, index) in bill" :key="index">
           <el-timeline>
             <el-timeline-item
@@ -40,29 +39,41 @@
               :timestamp="value.amount_time"
               placement="top"
             >
-              <el-card
-                :body-style="{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                }"
+              <el-popconfirm
+                confirm-button-text="修改"
+                cancel-button-text="删除"
+                icon-color="#626AEF"
+                title="请进行你的操作"
+                cancel-button-type="primary"
+                @confirm="alerts"
+                @cancel="Deletes(value.id)"
               >
-                <div class="flex flex-col">
-                  <div v-for="(val, index) in sto.svgData" :key="index">
-                    <h1
-                      v-if="sto.svgData[index].id == value.category_id"
-                      class="flex"
-                    >
-                      <img
-                        :src="'http://127.0.0.1:5173/src' + val.url"
-                        class="h-10"
-                      />
-                      {{ val.name }}
-                    </h1>
-                  </div>
-                  <p class="text-gray-400">{{ value.note }}</p>
-                </div>
-                <h1>{{ value.amount }}</h1>
-              </el-card>
+                <template #reference>
+                  <el-card
+                    :body-style="{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }"
+                  >
+                    <div class="flex flex-col">
+                      <div v-for="(val, key) in sto.svgData" :key="key">
+                        <h1
+                          v-if="sto.svgData[key].id == value.category_id"
+                          class="flex"
+                        >
+                          <img
+                            :src="'http://127.0.0.1:5173/src' + val.url"
+                            class="h-10"
+                          />
+                          {{ val.name }}
+                        </h1>
+                      </div>
+                      <p class="text-gray-400">{{ value.note }}</p>
+                    </div>
+                    <h1>{{ value.amount }}</h1>
+                  </el-card>
+                </template>
+              </el-popconfirm>
             </el-timeline-item>
           </el-timeline>
         </div>
@@ -81,37 +92,71 @@
   </el-container>
 </template>
 <script setup lang="ts">
-import { Tools, Histogram, Plus } from "@element-plus/icons-vue";
-import { getAll } from "@/axios/index";
+import { Tools, Histogram, Plus, Delete } from "@element-plus/icons-vue";
+import { getAll, deleteId } from "@/axios/index";
 import { ref, reactive, computed } from "vue";
+import { ElMessageBox } from "element-plus";
 import svg from "@/stores/svg";
-const userId = Number(localStorage.getItem("userId"));
-let flag = ref(false);
-const sto = svg();
-let bill = ref([]);
-let income = ref(0);
-let spend = ref(0);
+import router from "@/router";
+const userId = Number(localStorage.getItem("userId")); //用户id
+let flag = ref(true); //转换
+const sto = svg(); //pinia数据
+let bill = reactive([]); //渲染数据
+let income = ref(0); //收入
+let spend = ref(0); //支出
+let long = ["1"];
+//渲染接口
 getAll(userId).then((res) => {
-  // 这玩意是一个reactive类型的对象，直接赋值会覆盖掉reactive的东西
-  bill.value = res.data.data;
-  for (let i = 0; i < bill.value.length; i++) {
-    if (bill.value[i].amount > 0) {
-      income.value += bill.value[i].amount;
+  if (res.data.data != null) {
+    income.value = 0;
+    spend.value = 0;
+    bill.length = 0;
+    for (let a = 0; a < res.data.data.length; a++) {
+      bill.push(res.data.data[a]);
+    }
+    if (bill == null) {
+      flag.value = true;
     } else {
-      spend.value += bill.value[i].amount;
+      flag.value = false;
+      for (let i = 0; i < bill.length; i++) {
+        if (bill[i].amount > 0) {
+          income.value += bill[i].amount;
+        } else {
+          spend.value += bill[i].amount;
+        }
+      }
     }
   }
-  // flag.value = false;
-  console.log(bill.value);
 });
+//删除接口
+const Deletes = (id: Number) => {
+  deleteId(id).then((res) => {
+    console.log(res);
+    for (let q = 0; q < bill.length; q++) {
+      if (bill[q].id == id) {
+        if (bill[q].amount > 0) {
+          income.value -= bill[q].amount;
+        } else {
+          spend.value -= bill[q].amount;
+        }
+        bill.splice(q, 1);
+      }
+    }
+    if (bill.length == 0) {
+      flag.value = true;
+    } else {
+      flag.value = false;
+    }
+  });
+};
+//修改接口
+const alerts = () => {
+  console.log("修改");
+  router.push({
+    name: "alters",
+  });
+};
 </script>
-
-<!-- <style>
-.el-card__body {
-  display: flex;
-  justify-content: space-between;
-}
-</style> -->
 
 <style scoped>
 .bot {

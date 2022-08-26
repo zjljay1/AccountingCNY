@@ -46,6 +46,11 @@ const router = createRouter({
       name: "sort",
       component: () => import("../rou-vue/index/sort.vue"),
     },
+    {
+      path: "/alters",
+      name: "alters",
+      component: () => import("../rou-vue/index/alters.vue"),
+    },
   ],
 });
 

@@ -2,6 +2,7 @@ package com.bill_java.controller;
 
 import com.bill_java.common.lang.Result;
 import com.bill_java.entity.amount;
+import com.bill_java.entity.category;
 import com.bill_java.service.billService;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,6 @@ public class billController {
     @PostMapping("/add")
     public Result addBill(@RequestBody amount m){
         int addbill = billService.addbill(m);
-        System.out.println(m);
-        System.out.println(m.getCategory_id());
-        System.out.println(m.getUser_id());
         if(addbill>0){
             return Result.succ("添加成功");
         }
@@ -53,6 +51,26 @@ public class billController {
         return Result.fail("查询失败");
     }
 
+    //根据用户id删除数据
+    @DeleteMapping("/deleteId/{id}")
+    public Result deleteId(@PathVariable("id") int id){
+        int deleteid = billService.deleteid(id);
+        if(deleteid>0){
+            return Result.succ("删除成功");
+        }
+        return Result.succ("删除失败");
+    }
+
+
+    //添加页面数据查询
+    @GetMapping("/getCate")
+    public Result getCateAll(){
+        List<category> cateAll = billService.getCateAll();
+        if(cateAll.size()>0){
+            return Result.succ(cateAll);
+        }
+        return Result.fail("查询失败");
+    }
 
 }
 
