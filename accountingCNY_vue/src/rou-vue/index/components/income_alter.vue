@@ -7,15 +7,17 @@
       class="m-4 flex flex-col items-center"
       @click="changeMode(value.name, value.id)"
     >
-      <span v-if="value.id == mode" class="flex h-3 w-3 relative left-4">
-        <span
-          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
-        ></span>
-        <span
-          class="relative inline-flex rounded-full h-3 w-3 bg-purple-500"
-        ></span>
-      </span>
-      <img :src="'http://127.0.0.1:5173/src' + value.url" class="h-10" />
+      <div>
+        <span v-if="value.id == mode" class="flex h-3 w-3 absolute left-12">
+          <span
+            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
+          ></span>
+          <span
+            class="relative inline-flex rounded-full h-3 w-3 bg-purple-500"
+          ></span>
+        </span>
+        <img :src="'http://127.0.0.1:5173/src' + value.url" class="h-10" />
+      </div>
       <p class="text-sm">{{ value.name }}</p>
     </div>
   </div>
