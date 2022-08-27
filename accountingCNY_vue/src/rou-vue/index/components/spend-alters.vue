@@ -7,7 +7,7 @@
       class="flex flex-col items-center relative"
       @click="changeMode(val.name, val.id)"
     >
-      <span v-if="val.name == mode" class="flex h-3 w-3 absolute left-4">
+      <span v-if="val.id == mode" class="flex h-3 w-3 absolute left-4">
         <span
           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
         ></span>
@@ -28,9 +28,10 @@ import svg from "@/stores/svg";
 import { getCateAll } from "@/axios/index";
 let spendSvg = ref([]); //接口接受数据
 let spendData = ref([]); //页面渲染数据
-let mode = ref("");
+let mode = ref();
 let stoer = storebill(); //pinia状态数据
 let svgid = svg(); //pinia状态数据
+mode.value = stoer.amount.category_id;
 //查询接口
 getCateAll().then((res) => {
   spendSvg.value = res.data.data;
@@ -49,7 +50,7 @@ getCateAll().then((res) => {
 });
 //点击事件
 const changeMode = (itme: any, id) => {
-  mode.value = itme;
+  mode.value = id;
   stoer.category.spend = itme;
   stoer.category.cate_id = id;
   stoer.category.sort = 0;

@@ -8,7 +8,7 @@
     </div>
     <!-- 支出收入区域 -->
     <div>
-      <el-tabs v-model="first" type="border-card" stretch class="flex flex-col">
+      <el-tabs v-model="flag" type="border-card" stretch class="flex flex-col">
         <el-tab-pane label="支出" name="first">
           <spend_alter />
         </el-tab-pane>
@@ -19,7 +19,7 @@
     </div>
     <!-- 账单信息区域 -->
     <div>
-      <news />
+      <news_alter />
     </div>
   </div>
 </template>
@@ -30,8 +30,15 @@ import { reactive, ref } from "vue";
 import income_alter from "./components/income_alter.vue";
 import spend_alter from "./components/spend-alters.vue";
 import router from "@/router";
-import news from "./components/news.vue";
-const first = ref("first");
+import news_alter from "./components/news_alter.vue";
+import stores from "@/stores/index";
+let flag = ref("");
+let sto = stores();
+if (sto.amount.amount < 0) {
+  flag.value = "first";
+} else {
+  flag.value = "second";
+}
 const atavisn = () => {
   router.push({
     name: "index",

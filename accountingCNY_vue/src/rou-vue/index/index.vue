@@ -45,7 +45,7 @@
                 icon-color="#626AEF"
                 title="请进行你的操作"
                 cancel-button-type="primary"
-                @confirm="alerts"
+                @confirm="alerts(value)"
                 @cancel="Deletes(value.id)"
               >
                 <template #reference>
@@ -54,19 +54,20 @@
                       display: 'flex',
                       justifyContent: 'space-between',
                     }"
+                    class="h-26"
                   >
                     <div class="flex flex-col">
                       <div v-for="(val, key) in sto.svgData" :key="key">
-                        <h1
+                        <h2
                           v-if="sto.svgData[key].id == value.category_id"
-                          class="flex"
+                          class="flex h-6"
                         >
                           <img
                             :src="'http://127.0.0.1:5173/src' + val.url"
-                            class="h-10"
+                            class="h-8"
                           />
                           {{ val.name }}
-                        </h1>
+                        </h2>
                       </div>
                       <p class="text-gray-400">{{ value.note }}</p>
                     </div>
@@ -98,13 +99,14 @@ import { ref, reactive, computed } from "vue";
 import { ElMessageBox } from "element-plus";
 import svg from "@/stores/svg";
 import router from "@/router";
+import stores from "@/stores/index";
 const userId = Number(localStorage.getItem("userId")); //用户id
 let flag = ref(true); //转换
 const sto = svg(); //pinia数据
 let bill = reactive([]); //渲染数据
 let income = ref(0); //收入
 let spend = ref(0); //支出
-let long = ["1"];
+let store = stores();
 //渲染接口
 getAll(userId).then((res) => {
   if (res.data.data != null) {
@@ -119,6 +121,17 @@ getAll(userId).then((res) => {
     } else {
       flag.value = false;
       for (let i = 0; i < bill.length; i++) {
+        let d = new Date(bill[i].amount_time);
+        bill[i].amount_time =
+          d.getFullYear() +
+          "-" +
+          (d.getMonth() + 1) +
+          "-" +
+          d.getDate() +
+          " " +
+          d.getHours() +
+          ":" +
+          d.getMinutes();
         if (bill[i].amount > 0) {
           income.value += bill[i].amount;
         } else {
@@ -150,8 +163,8 @@ const Deletes = (id: Number) => {
   });
 };
 //修改接口
-const alerts = () => {
-  console.log("修改");
+const alerts = (data: any) => {
+  store.amount = data;
   router.push({
     name: "alters",
   });

@@ -56,3 +56,12 @@ export const getCateAll = () => {
     method: "get",
   });
 };
+
+//修改数据
+export const alters = (data: any) => {
+  return Service({
+    url: "/bill/alters",
+    data: JSON.stringify(data),
+    method: "post",
+  });
+};

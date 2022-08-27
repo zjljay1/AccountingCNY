@@ -3,10 +3,7 @@ package com.bill_java.mapper;
 import com.bill_java.entity.amount;
 import com.bill_java.entity.category;
 import com.bill_java.entity.user;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -41,8 +38,20 @@ public interface billMapper {
     @Delete("delete from amount where id=#{id}")
     int deleteid(int id);
 
-    //添加页面数据查询
+    //查询页面数据查询
     @Select("select * from category")
     List<category> getCateAll();
 
+    //用户修改数据
+    @Update("update amount set amount=#{amount},amount_time=#{amount_time},category_id=#{category_id},note=#{note}" +
+            "where id=#{id}")
+    int alters(amount amount);
+
+    //添加类别数据
+    @Insert("insert into category(name,sort,svgid) value(#{name},#{sort},#{svgid})")
+    int addCate(category category);
+
+    //修改类别数据
+    @Update("update category set name=#{name},sort=#{sort},svgid=#{svgid} where id=#{id}")
+    int alterCate(category category);
 }

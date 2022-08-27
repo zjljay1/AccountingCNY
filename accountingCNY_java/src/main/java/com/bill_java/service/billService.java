@@ -30,4 +30,13 @@ public interface billService {
 
     //添加页面数据查询
     List<category> getCateAll();
+
+    //用户修改数据
+    int alters(amount amount);
+
+    //添加类别
+    int addCate(category category);
+
+    //修改类别
+    int alterCate(category category);
 }

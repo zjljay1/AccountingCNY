@@ -7,7 +7,7 @@
       class="m-4 flex flex-col items-center"
       @click="changeMode(value.name, value.id)"
     >
-      <span v-if="value.name == mode" class="flex h-3 w-3 relative left-4">
+      <span v-if="value.id == mode" class="flex h-3 w-3 relative left-4">
         <span
           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
         ></span>
@@ -28,9 +28,11 @@ import svg from "@/stores/svg";
 import { getCateAll } from "@/axios/index";
 let incomeSvg = ref([]); //接口接受数据
 let incomeData = ref([]); //页面渲染数据
-let mode = ref("");
+let mode = ref();
 let store = storeincome(); //pinia状态数据
 let svgid = svg(); //pinia状态数据
+mode.value = store.amount.category_id;
+store.category.cate_id = store.amount.category_id;
 //查询接口
 getCateAll().then((res) => {
   incomeSvg.value = res.data.data;
@@ -49,7 +51,7 @@ getCateAll().then((res) => {
 });
 //点击事件
 const changeMode = (itme: any, id: any) => {
-  mode.value = itme;
+  mode.value = id;
   store.category.income = itme;
   store.category.cate_id = id;
   store.category.sort = 1;

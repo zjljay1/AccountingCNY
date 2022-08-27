@@ -57,4 +57,19 @@ public class billServiceImpl implements billService {
     public List<category> getCateAll() {
          return  billMapper.getCateAll();
     }
+
+    @Override
+    public int alters(amount amount) {
+        return billMapper.alters(amount);
+    }
+
+    @Override
+    public int addCate(category category) {
+        return billMapper.addCate(category);
+    }
+
+    @Override
+    public int alterCate(category category) {
+        return billMapper.alterCate(category);
+    }
 }

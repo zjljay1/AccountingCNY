@@ -4,14 +4,13 @@ import com.bill_java.common.lang.Result;
 import com.bill_java.entity.amount;
 import com.bill_java.entity.category;
 import com.bill_java.service.billService;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
 
 @CrossOrigin
 @RestController
@@ -72,5 +71,36 @@ public class billController {
         return Result.fail("查询失败");
     }
 
+    //用户修改数据
+    @PostMapping("/alters")
+    public Result alters(@RequestBody amount amount){
+        int alters = billService.alters(amount);
+        System.out.println(amount);
+        if(alters>0){
+            return Result.succ("修改成功");
+        }
+        return Result.fail("修改失败");
+    }
+
+    //添加类别
+    @PostMapping("/addCate")
+    public Result addCate(@RequestBody category category){
+        int i = billService.addCate(category);
+        if(i>0){
+            return Result.succ("添加成功");
+        }
+        return Result.fail("添加失败");
+    }
+
+    //修改类别
+    @PostMapping("/alterCate")
+    public Result alterCate(@RequestBody category category){
+        System.out.println(category);
+        int i = billService.alterCate(category);
+        if(i>0){
+            return Result.succ("修改成功");
+        }
+        return Result.fail("修改失败");
+    }
 }
 
