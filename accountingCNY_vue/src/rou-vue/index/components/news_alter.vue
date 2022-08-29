@@ -31,17 +31,17 @@
 import { ref } from "vue";
 import bill from "@/stores/index";
 import { addbill, alters } from "@/axios/index";
+import router from "@/router/index";
 const note = ref(""); //备注
 let amount = ref(""); //金额
-let date = ref(new Date()); //时;
 let store = bill();
+let date = ref(new Date(store.amount.amount_time)); //时;
 if (store.amount.amount < 0) {
   amount.value = -store.amount.amount;
 } else {
   amount.value = store.amount.amount;
 }
 note.value = store.amount.note;
-date.value = store.amount.amount_time;
 const push = () => {
   if (store.category.sort == 0) {
     amount.value = amount.value * -1;
@@ -54,14 +54,12 @@ const push = () => {
     user_id: Number(localStorage.getItem("userId")),
     note: note.value,
   };
-  console.log(data);
-  alters(data)
-    .then((res) => {
-      console.log(res.data);
-    })
-    .catch((error) => {
-      console.log(error.data);
+  alters(data).then((res) => {
+    console.log(res.data);
+    router.push({
+      name: "index",
     });
+  });
 };
 </script>
 <style>

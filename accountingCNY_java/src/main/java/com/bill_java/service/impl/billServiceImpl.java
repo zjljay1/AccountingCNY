@@ -72,4 +72,21 @@ public class billServiceImpl implements billService {
     public int alterCate(category category) {
         return billMapper.alterCate(category);
     }
+
+    @Override
+    public int DeleteCate(int id) {
+        return billMapper.DeleteCate(id);
+    }
+
+    @Override
+    public int DeleteCatesort(category category) {
+        return billMapper.DeleteCatesort(category);
+    }
+
+    @Override
+    public int sort(category category) {
+        return billMapper.sort(category);
+    }
+
+
 }

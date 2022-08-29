@@ -36,21 +36,25 @@ let svgid = svg(); //pinia状态数据
 mode.value = store.amount.category_id;
 store.category.cate_id = store.amount.category_id;
 //查询接口
-getCateAll().then((res) => {
-  incomeSvg.value = res.data.data;
-  for (let i = 0; i < incomeSvg.value.length; i++) {
-    if (incomeSvg.value[i].sort == 1) {
-      incomeData.value.push(incomeSvg.value[i]);
-    }
-  }
-  for (let k = 0; k < incomeData.value.length; k++) {
-    for (let t = 0; t < svgid.svgData.length; t++) {
-      if (incomeData.value[k].svgid == svgid.svgData[t].svgid) {
-        incomeData.value[k].url = svgid.svgData[t].url;
+const againGet = () => {
+  getCateAll().then((res) => {
+    incomeSvg.value = res.data.data;
+    incomeData.value = [];
+    for (let i = 0; i < incomeSvg.value.length; i++) {
+      if (incomeSvg.value[i].sort == 1) {
+        incomeData.value.push(incomeSvg.value[i]);
       }
     }
-  }
-});
+    for (let k = 0; k < incomeData.value.length; k++) {
+      for (let t = 0; t < svgid.svgData.length; t++) {
+        if (incomeData.value[k].svgid == svgid.svgData[t].svgid) {
+          incomeData.value[k].url = svgid.svgData[t].url;
+        }
+      }
+    }
+  });
+};
+againGet();
 //点击事件
 const changeMode = (itme: any, id: any) => {
   mode.value = id;

@@ -3,6 +3,7 @@ package com.bill_java.service;
 
 import com.bill_java.entity.amount;
 import com.bill_java.entity.category;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -39,4 +40,13 @@ public interface billService {
 
     //修改类别
     int alterCate(category category);
+
+    //用户删除类别
+    int DeleteCate(int id);
+
+    //排序 用户删除类别
+    int DeleteCatesort(category category);
+
+    //排序
+    int sort(category category);
 }

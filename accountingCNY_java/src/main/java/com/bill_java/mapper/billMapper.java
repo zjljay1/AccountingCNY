@@ -48,10 +48,23 @@ public interface billMapper {
     int alters(amount amount);
 
     //添加类别数据
-    @Insert("insert into category(name,sort,svgid) value(#{name},#{sort},#{svgid})")
+    @Insert("insert into category(name,sort,svgid,user_id,sequencing) value(#{name},#{sort},#{svgid},#{user_id},#{sequencing})")
     int addCate(category category);
 
     //修改类别数据
-    @Update("update category set name=#{name},sort=#{sort},svgid=#{svgid} where id=#{id}")
+    @Update("update category set name=#{name},sort=#{sort},svgid=#{svgid} where id=#{id} and user_id=#{user_id}")
     int alterCate(category category);
+
+    //用户删除类别
+    @Delete("delete from category where id=#{id}")
+    int DeleteCate(int id);
+
+    //用户删除类别
+    @Delete("delete from category where sort=#{sort} and user_id=#{user_id}")
+    int DeleteCatesort(category category);
+
+    //排序
+    @Update("update category set sequencing=#{sequencing} where id=#{id} and user_id=#{user_id}")
+    int sort(category category);
+
 }

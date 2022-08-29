@@ -65,3 +65,47 @@ export const alters = (data: any) => {
     method: "post",
   });
 };
+
+//添加类别
+export const addCate = (data: any) => {
+  return Service({
+    url: "/bill/addCate",
+    data: JSON.stringify(data),
+    method: "post",
+  });
+};
+
+//修改类别
+export const alterCate = (data: any) => {
+  return Service({
+    url: "/bill/alterCate",
+    data: JSON.stringify(data),
+    method: "post",
+  });
+};
+
+//删除类别
+export const DeleteCate = (id: any) => {
+  return Service({
+    url: `bill/deleteCate/${id}`,
+    method: "delete",
+  });
+};
+
+//删除
+export const DeleteCateSort = (data: any) => {
+  return Service({
+    url: "bill/deleteCateSort",
+    data: JSON.stringify(data),
+    method: "delete",
+  });
+};
+
+// 排序
+export const sort = (data: any) => {
+  return Service({
+    url: "bill/sort",
+    method: "post",
+    data: JSON.stringify(data),
+  });
+};

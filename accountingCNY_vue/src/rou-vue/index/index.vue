@@ -92,11 +92,11 @@
     </el-main>
   </el-container>
 </template>
+
 <script setup lang="ts">
 import { Tools, Histogram, Plus, Delete } from "@element-plus/icons-vue";
 import { getAll, deleteId } from "@/axios/index";
 import { ref, reactive, computed } from "vue";
-import { ElMessageBox } from "element-plus";
 import svg from "@/stores/svg";
 import router from "@/router";
 import stores from "@/stores/index";
@@ -108,39 +108,42 @@ let income = ref(0); //收入
 let spend = ref(0); //支出
 let store = stores();
 //渲染接口
-getAll(userId).then((res) => {
-  if (res.data.data != null) {
-    income.value = 0;
-    spend.value = 0;
-    bill.length = 0;
-    for (let a = 0; a < res.data.data.length; a++) {
-      bill.push(res.data.data[a]);
-    }
-    if (bill == null) {
-      flag.value = true;
-    } else {
-      flag.value = false;
-      for (let i = 0; i < bill.length; i++) {
-        let d = new Date(bill[i].amount_time);
-        bill[i].amount_time =
-          d.getFullYear() +
-          "-" +
-          (d.getMonth() + 1) +
-          "-" +
-          d.getDate() +
-          " " +
-          d.getHours() +
-          ":" +
-          d.getMinutes();
-        if (bill[i].amount > 0) {
-          income.value += bill[i].amount;
-        } else {
-          spend.value += bill[i].amount;
+const againGet = () => {
+  getAll(userId).then((res) => {
+    if (res.data.data != null) {
+      income.value = 0;
+      spend.value = 0;
+      bill.length = 0;
+      for (let a = 0; a < res.data.data.length; a++) {
+        bill.push(res.data.data[a]);
+      }
+      if (bill == null) {
+        flag.value = true;
+      } else {
+        flag.value = false;
+        for (let i = 0; i < bill.length; i++) {
+          let d = new Date(bill[i].amount_time);
+          bill[i].amount_time =
+            d.getFullYear() +
+            "-" +
+            (d.getMonth() + 1) +
+            "-" +
+            d.getDate() +
+            " " +
+            d.getHours() +
+            ":" +
+            d.getMinutes();
+          if (bill[i].amount > 0) {
+            income.value += bill[i].amount;
+          } else {
+            spend.value += bill[i].amount;
+          }
         }
       }
     }
-  }
-});
+  });
+};
+againGet();
 //删除接口
 const Deletes = (id: Number) => {
   deleteId(id).then((res) => {
@@ -165,6 +168,11 @@ const Deletes = (id: Number) => {
 //修改接口
 const alerts = (data: any) => {
   store.amount = data;
+  if (data.amount < 0) {
+    store.category.sort = 0;
+  } else {
+    store.category.sort = 1;
+  }
   router.push({
     name: "alters",
   });
