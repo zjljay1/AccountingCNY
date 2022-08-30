@@ -1,6 +1,6 @@
 <template>
   <!-- 收入 -->
-  <div class="grid grid-cols-4 gap-3 h-36 overflow-auto">
+  <div class="grid grid-cols-4 gap-3 h-96 overflow-auto">
     <div
       v-for="(value, index) in incomeData"
       :key="index"
@@ -42,10 +42,10 @@
     :width="formLabelWidth"
   >
     <el-form :model="form">
-      <el-form-item label="请输入类型名称" :label-width="nameWidht">
+      <el-form-item label="请输入类型名称">
         <el-input v-model="form.name" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="请选择类型图片" :label-width="imgWidht">
+      <el-form-item label="请选择类型图片">
         <div
           v-for="(value, index) in svgid.svgData"
           :key="index"
@@ -80,7 +80,7 @@
       <el-form-item label="请输入修改的类型名称" :label-width="nameWidhttow">
         <el-input v-model="ADname.name" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="请选择类型图片" :label-width="imgWidht">
+      <el-form-item label="请选择类型图片">
         <div
           v-for="(value, index) in svgid.svgData"
           :key="index"
@@ -107,10 +107,19 @@
     <!-- 删除 修改按钮 -->
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" @click="Detele">删除</el-button>
-        <el-button type="primary" @click="Alter">修改</el-button>
+        <el-button type="danger" @click="innerVisible = true">删除</el-button>
+        <el-button type="success" @click="Alter">修改</el-button>
       </span>
     </template>
+    <el-dialog v-model="innerVisible" width="50%" append-to-body>
+      <p>将删除{{ ADname.name }}类别的数据</p>
+      <template #footer>
+        <el-button type="success" @click="Detele">确定删除</el-button>
+        <el-button type="default" @click="innerVisible = false"
+          >取消删除</el-button
+        ></template
+      ></el-dialog
+    >
   </el-dialog>
 
   <!-- 排序窗口 -->
@@ -161,7 +170,6 @@ import {
   sort,
 } from "@/axios/index";
 import draggable from "vuedraggable";
-import { da } from "element-plus/es/locale";
 let incomeSvg = ref([]); //接口接受数据
 let incomeData = ref([]); //页面渲染数据
 let mode = ref();
@@ -199,9 +207,7 @@ const changeMode = (itme: any, id: any) => {
 };
 //添加类型
 const dialogFormVisible = ref(false); //窗口是否展示
-const formLabelWidth = "540px"; //窗口总宽度
-const nameWidht = "120px";
-const imgWidht = "120px";
+const formLabelWidth = "80%"; //窗口总宽度
 const form = reactive({
   name: "",
 });
@@ -227,6 +233,7 @@ let de: Date;
 let revele = ref(false);
 const nameWidhttow = "160px";
 let alterData = ref();
+const innerVisible = ref(false);
 let ADname = reactive({
   name: "",
 });
@@ -243,6 +250,10 @@ const pet = () => {
 const pct = (data: any) => {
   de = new Date();
   alterData.value = data;
+  ADname.name = data.name;
+  modee.value = data.svgid;
+  console.log(data);
+
   const ddTime = dd.getTime();
   const deTime = de.getTime();
   if (deTime - ddTime > 200) {
@@ -269,6 +280,7 @@ const Alter = () => {
 const Detele = () => {
   let deleteid = alterData.value.id;
   revele.value = false;
+  innerVisible.value = false;
   //删除
   DeleteCate(deleteid).then((res) => {
     console.log(res);

@@ -1,6 +1,6 @@
 <template>
   <!-- 支出 -->
-  <div class="grid grid-cols-4 gap-3 h-36 overflow-auto">
+  <div class="grid grid-cols-4 gap-3 overflow-auto h-96">
     <div
       v-for="(val, index) in spendData"
       :key="index"
@@ -41,10 +41,10 @@
       :width="formLabelWidth"
     >
       <el-form :model="form">
-        <el-form-item label="请输入类型名称" :label-width="nameWidht">
+        <el-form-item label="请输入类型名称">
           <el-input v-model="form.name" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="请选择类型图片" :label-width="imgWidht">
+        <el-form-item label="请选择类型图片">
           <div
             v-for="(value, index) in svgid.svgData"
             :key="index"
@@ -82,10 +82,10 @@
     <!-- 修改and删除 -->
     <el-dialog v-model="revele" title="修改或删除类型" :width="formLabelWidth">
       <el-form :model="form">
-        <el-form-item label="请输入修改的类型名称" :label-width="nameWidhttow">
+        <el-form-item label="请输入修改的类型名称">
           <el-input v-model="ADname.name" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="请选择类型图片" :label-width="imgWidht">
+        <el-form-item label="请选择类型图片">
           <div
             v-for="(value, index) in svgid.svgData"
             :key="index"
@@ -115,10 +115,19 @@
       <!-- 删除 修改按钮 -->
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="primary" @click="Detele">删除</el-button>
-          <el-button type="primary" @click="Alter">修改</el-button>
+          <el-button type="danger" @click="innerVisible = true">删除</el-button>
+          <el-button type="success" @click="Alter">修改</el-button>
         </span>
       </template>
+      <el-dialog v-model="innerVisible" width="50%" append-to-body>
+        <p>将删除{{ ADname.name }}类别的数据</p>
+        <template #footer>
+          <el-button type="success" @click="Detele">确定删除</el-button>
+          <el-button type="default" @click="innerVisible = false"
+            >取消删除</el-button
+          ></template
+        ></el-dialog
+      >
     </el-dialog>
 
     <!-- 排序 -->
@@ -207,9 +216,7 @@ const changeMode = (itme: any, id: any) => {
 };
 //添加类型
 const dialogFormVisible = ref(false);
-const formLabelWidth = "540px";
-const nameWidht = "120px";
-const imgWidht = "120px";
+const formLabelWidth = "80%";
 const form = reactive({
   name: "",
 });
@@ -233,8 +240,8 @@ const add = () => {
 let dd: Date;
 let de: Date;
 let revele = ref(false);
-const nameWidhttow = "160px";
 let alterData = ref();
+const innerVisible = ref(false);
 let ADname = reactive({
   name: "",
 });
@@ -250,6 +257,8 @@ const pet = () => {
 const pct = (data: any) => {
   de = new Date();
   alterData.value = data;
+  ADname.name = data.name;
+  modee.value = data.svgid;
   const ddTime = dd.getTime();
   const deTime = de.getTime();
   if (deTime - ddTime > 200) {
@@ -275,6 +284,7 @@ const Alter = () => {
 //删除事件
 const Detele = () => {
   let deleteid = alterData.value.id;
+  innerVisible.value = false;
   revele.value = false;
   DeleteCate(deleteid).then((res) => {
     console.log(res);
@@ -303,3 +313,8 @@ const sorts = (data) => {
   }
 };
 </script>
+<style>
+.el-col-sm-8 {
+  max-width: 100%;
+}
+</style>
