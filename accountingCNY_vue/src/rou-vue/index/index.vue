@@ -107,6 +107,7 @@ let bill = reactive([]); //渲染数据
 let income = ref(0); //收入
 let spend = ref(0); //支出
 let store = stores();
+let datetime = ref(new Date());
 //渲染接口
 const againGet = () => {
   getAll(userId).then((res) => {
@@ -115,7 +116,11 @@ const againGet = () => {
       spend.value = 0;
       bill.length = 0;
       for (let a = 0; a < res.data.data.length; a++) {
-        bill.push(res.data.data[a]);
+        let d = new Date(res.data.data[a].amount_time);
+        let dMo = d.getMonth();
+        if (datetime.value.getMonth() == dMo) {
+          bill.push(res.data.data[a]);
+        }
       }
       if (bill == null) {
         flag.value = true;
@@ -136,7 +141,7 @@ const againGet = () => {
           if (bill[i].amount > 0) {
             income.value += bill[i].amount;
           } else {
-            spend.value += bill[i].amount;
+            spend.value += -bill[i].amount;
           }
         }
       }

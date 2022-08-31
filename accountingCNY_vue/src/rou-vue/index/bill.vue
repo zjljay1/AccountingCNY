@@ -2,8 +2,17 @@
   <!-- 头部区域 -->
   <div class="flex justify-between">
     <el-icon class="m-3" @click="atavisn"><CloseBold /></el-icon>
-    <h2>统计</h2>
-    <div></div>
+    <div><h2>统计</h2></div>
+    <div>
+      <el-date-picker
+        v-model="month"
+        type="month"
+        format="YY-MM"
+        :editable="false"
+        :clearable="false"
+        class="wii"
+      />
+    </div>
   </div>
   <!-- 表区域 -->
   <div
@@ -15,12 +24,7 @@
     <p v-if="flag" class="flex justify-center">
       本月未开始记账<br />点击加号，开始记账
     </p>
-    <div
-      v-for="(value, index) in bill"
-      :key="index"
-      @touchstart.prevent="pet"
-      @touchend.prevent="pct(value)"
-    >
+    <div v-for="(value, index) in bill" :key="index">
       <el-timeline>
         <el-timeline-item center :timestamp="value.amount_time" placement="top">
           <el-card
@@ -51,57 +55,10 @@
       </el-timeline>
     </div>
   </div>
-
-  <el-dialog v-model="revele" title="修改或删除类型" :width="formLabelWidth">
-    <el-form :model="form">
-      <el-form-item label="请输入修改的类型名称">
-        <el-input v-model="ADname.name" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="请选择类型图片">
-        <div
-          v-for="(value, index) in svgid.svgData"
-          :key="index"
-          class="m-4 flex flex-col items-center"
-          @click="ade(value.id)"
-        >
-          <div>
-            <span
-              v-if="value.id == modee"
-              class="flex h-3 w-3 absolute left-12"
-            >
-              <span
-                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
-              ></span>
-              <span
-                class="relative inline-flex rounded-full h-3 w-3 bg-purple-500"
-              ></span>
-            </span>
-            <img :src="'http://127.0.0.1:5173/src' + value.url" class="h-10" />
-          </div>
-        </div>
-      </el-form-item>
-    </el-form>
-    <!-- 删除 修改按钮 -->
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button type="danger" @click="nested = true">删除</el-button>
-        <el-button type="success" @click="Alter">修改</el-button>
-      </span>
-    </template>
-    <el-dialog v-model="nested" width="50%" append-to-body>
-      <p>确定删除{{ ADname.name }}的数据吗？</p>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button type="success" @click="Detele">确定删除</el-button>
-          <el-button type="default" @click="nested = false">取消删除</el-button>
-        </span>
-      </template>
-    </el-dialog>
-  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, watch } from "vue";
 import * as echarts from "echarts";
 import { CloseBold } from "@element-plus/icons-vue";
 import router from "@/router/index";
@@ -115,29 +72,37 @@ let option;
 let flag = ref(true); //转换
 const sto = svg(); //pinia数据
 let bill = reactive([]); //渲染数据
-let income = ref([]); //收入
-let spend = ref([]); //支出
+let inMouth = []; //当月每日收入
+let spMouth = []; //当月每日支出
 let store = stores(); //pinia
-let date = ref([]);
-let svgid = svg();
-let myChart: any;
+let month = ref(new Date()); //月份
+for (let i = 0; i < 32; i++) {
+  inMouth[i] = 0;
+  spMouth[i] = 0;
+}
+let chartDom;
+let myChart;
 //查询接口
 const again = () => {
   getAll(userId).then((res) => {
-    console.log(option.legend.selected);
     if (res.data.data != null) {
-      bill.length = 0;
+      let moth = month.value.getMonth() + 1;
+      let shu = 0;
       for (let i = 0; i < res.data.data.length; i++) {
-        if (res.data.data[i].amount < 0) {
-          spend.value[i] = -res.data.data[i].amount;
-        } else {
-          income.value[i] = res.data.data[i].amount;
-        }
-        bill.push(res.data.data[i]);
         let d = new Date(res.data.data[i].amount_time);
-        bill[i].amount_time =
-          d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-        date.value[i] = d.getMonth() + 1 + "-" + d.getDate();
+        let dM = d.getDate() - 1;
+        let dMo = d.getMonth() + 1;
+        if (moth == dMo && res.data.data[i].amount < 0) {
+          spMouth[dM] += -res.data.data[i].amount;
+        } else if (moth == dMo && res.data.data[i].amount > 0) {
+          inMouth[dM] += res.data.data[i].amount;
+        }
+        if (moth == dMo) {
+          bill.push(res.data.data[i]);
+          bill[shu].amount_time =
+            d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+          shu++;
+        }
       }
     }
     if (bill == null) {
@@ -147,19 +112,22 @@ const again = () => {
     }
     myChart.setOption({
       xAxis: {
-        data: date.value,
+        axisTick: {
+          alignWithLabel: true,
+        },
       },
       yAxis: {},
       series: [
         {
           // 根据名字对应到相应的系列
           name: "支出",
-          data: spend.value,
+          // barWidth: "60%",
+          data: spMouth,
         },
         {
           // 根据名字对应到相应的系列
           name: "收入",
-          data: income.value,
+          data: inMouth,
         },
       ],
     });
@@ -167,9 +135,8 @@ const again = () => {
 };
 //Mounted生命周期 在里面进行表的异步渲染
 onMounted(() => {
-  const chartDom = document.getElementById("myChart");
+  chartDom = document.getElementById("myChart");
   myChart = echarts.init(chartDom);
-
   option = {
     tooltip: {
       trigger: "axis",
@@ -180,9 +147,6 @@ onMounted(() => {
     },
     legend: {
       show: true,
-      // formatter: (name) => {
-      //   console.log(name, option.legend.selected);
-      // },
       selected: {
         支出: true,
         收入: true,
@@ -199,9 +163,15 @@ onMounted(() => {
       ],
     },
     xAxis: {
-      data: [],
+      type: "category",
+      data: [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+      ],
     },
-    yAxis: {},
+    yAxis: {
+      type: "value",
+    },
     series: [
       {
         name: "收入",
@@ -215,47 +185,18 @@ onMounted(() => {
       },
     ],
   };
-  getAll(userId).then((res) => {
-    console.log(option.legend.selected);
-    if (res.data.data != null) {
-      for (let i = 0; i < res.data.data.length; i++) {
-        if (res.data.data[i].amount < 0) {
-          spend.value[i] = -res.data.data[i].amount;
-        } else {
-          income.value[i] = res.data.data[i].amount;
-        }
-        bill.push(res.data.data[i]);
-        let d = new Date(res.data.data[i].amount_time);
-        bill[i].amount_time =
-          d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-        date.value[i] = d.getMonth() + 1 + "-" + d.getDate();
-      }
-    }
-    if (bill == null) {
-      flag.value = true;
-    } else {
-      flag.value = false;
-    }
-    myChart.setOption({
-      xAxis: {
-        data: date.value,
-      },
-      yAxis: {},
-      series: [
-        {
-          // 根据名字对应到相应的系列
-          name: "支出",
-          data: spend.value,
-        },
-        {
-          // 根据名字对应到相应的系列
-          name: "收入",
-          data: income.value,
-        },
-      ],
-    });
-  });
+  again();
   option && myChart.setOption(option);
+});
+//监视月份的变化
+watch(month, (newVal, oldVal) => {
+  console.log(newVal, oldVal);
+  for (let i = 0; i < 32; i++) {
+    inMouth[i] = 0;
+    spMouth[i] = 0;
+  }
+  bill.length = 0;
+  again();
 });
 //返回首页
 const atavisn = () => {
@@ -263,63 +204,9 @@ const atavisn = () => {
     name: "index",
   });
 };
-//删除和修改\
-const formLabelWidth = "80%"; //窗口总宽度
-const form = reactive({
-  name: "",
-});
-let dd: Date;
-let de: Date;
-let revele = ref(false);
-let alterData = ref();
-let nested = ref(false);
-let ADname = reactive({
-  name: "",
-});
-let modee = ref();
-const ade = (id: any) => {
-  modee.value = id;
-};
-//按下事件
-const pet = () => {
-  dd = new Date();
-};
-//松开事件
-const pct = (data: any) => {
-  de = new Date();
-  alterData.value = data;
-  ADname.name = data.name;
-  modee.value = data.svgid;
-  console.log(data);
-  const ddTime = dd.getTime();
-  const deTime = de.getTime();
-  if (deTime - ddTime > 200) {
-    revele.value = true;
-  }
-};
-//修改事件
-const Alter = () => {
-  revele.value = false;
-  if (ADname.name != "") {
-    alterData.value.name = ADname.name;
-  }
-  if (modee.value != null) {
-    alterData.value.svgid = modee.value;
-  }
-  alters(alterData.value).then((res) => {
-    console.log(res);
-    again();
-  });
-};
-//删除事件
-const Detele = () => {
-  let deleteid = alterData.value.id;
-  revele.value = false;
-  nested.value = false;
-  //删除
-  deleteId(deleteid).then((res) => {
-    console.log(res);
-    again();
-  });
-};
 </script>
+<style>
+.wii {
+  width: 5rem !important;
+}
+</style>

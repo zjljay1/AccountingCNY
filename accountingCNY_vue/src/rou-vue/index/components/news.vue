@@ -42,7 +42,7 @@ const push = () => {
   }
   const data = {
     amount: amount.value,
-    amount_time: new Date().getTime(),
+    amount_time: date.value.getTime(),
     category_id: store.category.cate_id,
     user_id: Number(localStorage.getItem("userId")),
     note: note.value,
