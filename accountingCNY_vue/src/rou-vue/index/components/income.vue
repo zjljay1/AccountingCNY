@@ -9,7 +9,7 @@
       @touchend.prevent="pct(value)"
     >
       <div>
-        <span v-if="value.id == mode" class="flex h-3 w-3 absolute left-12">
+        <span v-if="value.svgid == mode" class="flex h-3 w-3 absolute left-12">
           <span
             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
           ></span>
@@ -204,6 +204,7 @@ const changeMode = (itme: any, id: any) => {
   store.category.income = itme;
   store.category.cate_id = id;
   store.category.sort = 1;
+  console.log(itme, id);
 };
 //添加类型
 const dialogFormVisible = ref(false); //窗口是否展示
@@ -259,7 +260,7 @@ const pct = (data: any) => {
   if (deTime - ddTime > 200) {
     revele.value = true;
   } else {
-    changeMode(data.name, data.id);
+    changeMode(data.name, data.svgid);
   }
 };
 //修改事件

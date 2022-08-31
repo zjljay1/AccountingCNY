@@ -5,10 +5,10 @@
       v-for="(val, index) in spendData"
       :key="index"
       class="flex flex-col items-center relative"
-      @click="changeMode(val.name, val.id)"
+      @click="changeMode(val.name, val.svgid)"
     >
       <div>
-        <span v-if="val.id == mode" class="flex h-3 w-3 absolute left-12">
+        <span v-if="val.svgid == mode" class="flex h-3 w-3 absolute left-12">
           <span
             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
           ></span>
@@ -56,11 +56,11 @@ const againGet = () => {
 };
 againGet();
 //点击事件
-const changeMode = (itme: any, id) => {
-  mode.value = id;
+const changeMode = (itme: any, svgid) => {
+  mode.value = svgid;
   stoer.category.spend = itme;
-  stoer.category.cate_id = id;
+  stoer.category.cate_id = svgid;
   stoer.category.sort = 0;
-  console.log(itme, id);
+  console.log(itme, svgid);
 };
 </script>

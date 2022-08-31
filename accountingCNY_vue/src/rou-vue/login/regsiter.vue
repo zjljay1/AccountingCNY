@@ -1,21 +1,29 @@
 <template>
-  <div class="reg">
+  <el-alert
+    v-if="alt"
+    type="success"
+    description="注册成功,请返回登录页 登录"
+    show-icon
+    center
+    :closable="false"
+  />
+  <div class="flex justify-center items-center h-screen">
     <div class="form">
       <h1>REGSITER</h1>
       <div class="user">
         <img src="../../assets/img/login-img/username.png" />
-        <input id="name" type="text" placeholder="Username" />
+        <input v-model="name" type="text" placeholder="Username" />
       </div>
       <div class="pass">
         <img src="../../assets/img/login-img/password.png" />
-        <input id="pws" type="text" placeholder="Password" />
+        <input v-model="pws" type="text" placeholder="Password" />
       </div>
       <div class="pass">
         <img src="../../assets/img/login-img/手机.png" />
-        <input id="pws" type="text" placeholder="phone" />
+        <input v-model="phone" type="text" placeholder="phone" />
       </div>
       <div class="enter">
-        <button>注册</button>
+        <button @click="reigster">注册</button>
       </div>
       <div class="chek">
         <router-link to="/"><button>登录账号</button></router-link>
@@ -23,7 +31,31 @@
     </div>
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { register } from "@/axios/index";
+import { ref } from "vue";
+import router from "@/router";
+
+let name = ref();
+let pws = ref();
+let phone = ref();
+let alt = ref(false);
+const reigster = () => {
+  const data = {
+    name: name.value,
+    password: pws.value,
+    phone: phone.value,
+  };
+  console.log(data);
+  register(data).then((res) => {
+    console.log(res.data);
+    alt.value = true;
+    setTimeout(() => {
+      alt.value = false;
+    }, 2000);
+  });
+};
+</script>
 <style scoped>
 img {
   height: 25px;

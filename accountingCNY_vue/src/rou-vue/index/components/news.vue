@@ -31,6 +31,7 @@
 import { ref } from "vue";
 import bill from "@/stores/index";
 import { addbill } from "@/axios/index";
+import router from "@/router/index";
 const note = ref(""); //备注
 let amount = ref(""); //金额
 let date = ref(new Date()); //时;
@@ -46,13 +47,12 @@ const push = () => {
     user_id: Number(localStorage.getItem("userId")),
     note: note.value,
   };
-  addbill(data)
-    .then((res) => {
-      console.log(res.data.data);
-    })
-    .catch((error) => {
-      console.log(error);
+  addbill(data).then((res) => {
+    console.log(res.data.data);
+    router.push({
+      name: "index",
     });
+  });
 };
 </script>
 <style>

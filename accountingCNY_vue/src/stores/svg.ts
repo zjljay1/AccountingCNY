@@ -62,7 +62,7 @@ const svg = defineStore("svg", {
         },
         {
           url: "/img/income-svg/salary.svg",
-          name: "工资",
+          name: "薪资",
           id: 9,
           sort: 1,
           svgid: 9,

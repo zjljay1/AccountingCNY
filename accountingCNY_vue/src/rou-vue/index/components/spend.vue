@@ -9,7 +9,7 @@
       @touchend.prevent="pct(val)"
     >
       <div>
-        <span v-if="val.id == mode" class="flex h-3 w-3 absolute left-12">
+        <span v-if="val.svgid == mode" class="flex h-3 w-3 absolute left-12">
           <span
             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
           ></span>
@@ -208,11 +208,12 @@ const againGet = () => {
 };
 againGet();
 //点击事件
-const changeMode = (itme: any, id: any) => {
-  mode.value = id;
+const changeMode = (itme: any, svgid: any) => {
+  mode.value = svgid;
   stoer.category.spend = itme;
-  stoer.category.cate_id = id;
+  stoer.category.cate_id = svgid;
   stoer.category.sort = 0;
+  console.log(itme, svgid);
 };
 //添加类型
 const dialogFormVisible = ref(false);
@@ -264,7 +265,7 @@ const pct = (data: any) => {
   if (deTime - ddTime > 200) {
     revele.value = true;
   } else {
-    changeMode(data.name, data.id);
+    changeMode(data.name, data.svgid);
   }
 };
 //修改事件

@@ -8,6 +8,14 @@ export const login = (data: any) => {
     method: "post",
   });
 };
+//注册
+export const register = (data: any) => {
+  return Service({
+    url: "/user/register",
+    method: "post",
+    data: JSON.stringify(data),
+  });
+};
 //查询支出账单信息
 export const billSpend = (data: any) => {
   return Service({

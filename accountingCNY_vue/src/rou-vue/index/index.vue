@@ -59,7 +59,7 @@
                     <div class="flex flex-col">
                       <div v-for="(val, key) in sto.svgData" :key="key">
                         <h2
-                          v-if="sto.svgData[key].id == value.category_id"
+                          v-if="sto.svgData[key].svgid == value.category_id"
                           class="flex h-6"
                         >
                           <img
