@@ -3,7 +3,6 @@
     <div class="flex justify-between">
       <el-icon class="m-3" @click="atavisn"><CloseBold /></el-icon>
       <h2>分类管理</h2>
-      <div></div>
     </div>
     <div>
       <el-tabs v-model="first" type="border-card" stretch class="flex flex-col">

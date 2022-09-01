@@ -11,7 +11,7 @@ const indexStore = defineStore("index", {
       },
       user: {
         id: 0, //用户id
-        name: String, //用户名称
+        name: "", //用户名称
       },
       index: {},
       amount: {

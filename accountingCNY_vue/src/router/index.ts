@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import { createRouter, createWebHistory } from "vue-router";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -56,6 +57,7 @@ const router = createRouter({
 
 //路由守卫 登录
 router.beforeEach((_to, _from, _next) => {
+  let id = localStorage.getItem("userId");
   if (!_to.meta.hideBreadcrumb) {
     if (
       localStorage.getItem("name") != null &&
@@ -72,7 +74,7 @@ router.beforeEach((_to, _from, _next) => {
     _next();
   }
   if (_to.meta.hideBreadcrumb && localStorage.getItem("name") != null) {
-    if (localStorage.getItem("name") == "admin") {
+    if (localStorage.getItem("name") != "") {
       console.log("你已登录,无需重新登录");
       router.push({
         name: "index",

@@ -24,36 +24,44 @@
 import { login, userId } from "../../axios/index";
 import { reactive } from "vue";
 import router from "@/router";
-import store from "@/stores/index";
+import { ElMessage } from "element-plus";
 
 const data = reactive({ name: "", pws: "" });
-const str = store();
 const fa = reactive({
   //登录接口
   dpush() {
     const da = { name: data.name, password: data.pws };
     login(da)
       .then((res) => {
-        // console.log(res.data);
         if (res.data.code < 300) {
           localStorage.setItem("name", data.name);
-          userId(data.name)
-            .then((res) => {
-              localStorage.setItem("userId", res.data.data);
-            })
-            .catch();
-          router.push({
-            //编程式路由
-            name: "index",
+          userId(data.name).then((res) => {
+            localStorage.setItem("userId", res.data.data);
+            open2();
+            router.push({
+              //编程式路由
+              name: "index",
+            });
           });
         }
       })
       .catch((error) => {
-        console.log(data, da);
         console.log(error);
+        open4();
       });
   },
 });
+
+const open2 = () => {
+  ElMessage({
+    message: "登录成功",
+    type: "success",
+  });
+};
+
+const open4 = () => {
+  ElMessage.error("登录失败");
+};
 </script>
 
 <style scoped>

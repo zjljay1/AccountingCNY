@@ -117,3 +117,20 @@ export const sort = (data: any) => {
     data: JSON.stringify(data),
   });
 };
+
+//用户修改信息
+export const updateuser = (data: any) => {
+  return Service({
+    url: "user/update",
+    method: "post",
+    data: JSON.stringify(data),
+  });
+};
+
+//查询用户信息
+export const getuserall = (id: any) => {
+  return Service({
+    url: `user/getAll/${id}`,
+    method: "get",
+  });
+};
