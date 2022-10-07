@@ -1,5 +1,7 @@
 package com.bill_java.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.stp.StpUtil;
 import com.bill_java.common.lang.Result;
 import com.bill_java.entity.amount;
 import com.bill_java.entity.category;
@@ -16,7 +18,8 @@ import java.util.Map;
 @CrossOrigin
 @RestController
 @RequestMapping("/bill")
-public class billController {
+@SaCheckLogin
+public class BillController {
 
     @Autowired
     private billService billService;
@@ -46,6 +49,7 @@ public class billController {
     @GetMapping("/get/{id}")
     public Result getAll(@PathVariable("id") int id){
         List<amount> all = billService.getAll(id);
+        System.out.println(StpUtil.getLoginId());
         if(all.size()>0){
             return Result.succ(all);
         }
@@ -53,6 +57,7 @@ public class billController {
     }
 
     //根据用户id删除数据
+    @SaCheckLogin
     @DeleteMapping("/deleteId/{id}")
     public Result deleteId(@PathVariable("id") int id){
         int deleteid = billService.deleteid(id);

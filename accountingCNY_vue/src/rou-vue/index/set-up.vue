@@ -85,6 +85,7 @@ const onSubmit = () => {
 const outSubmit = () => {
   localStorage.removeItem("name");
   localStorage.removeItem("userId");
+  localStorage.removeItem("token");
   open();
   router.push({
     name: "login",

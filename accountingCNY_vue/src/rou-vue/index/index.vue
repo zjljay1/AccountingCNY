@@ -89,6 +89,26 @@
           </el-row>
         </router-link>
       </div>
+      <div class="pig">
+        <img
+          src="@/assets/img/waii/piyyg.svg"
+          class="h-14 w-14"
+          @click="pigyg = true"
+        />
+      </div>
+      <el-dialog v-model="pigyg" title="小猪存钱罐" width="80%">
+        <el-input
+          v-model="num"
+          type="Number"
+          placeholder="请输入金额"
+        ></el-input>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="pigyg = false">取消</el-button>
+            <el-button type="primary" @click="defin">确定</el-button>
+          </div>
+        </template>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -110,6 +130,7 @@ let store = stores();
 let datetime = ref(new Date());
 //渲染接口
 const againGet = () => {
+  console.log("渲染");
   getAll(userId).then((res) => {
     if (res.data.data != null) {
       income.value = 0;
@@ -122,6 +143,12 @@ const againGet = () => {
           bill.push(res.data.data[a]);
         }
       }
+      bill.sort((a, b) => {
+        return (
+          new Date(b.amount_time).getTime() - new Date(a.amount_time).getTime()
+        );
+      });
+
       if (bill == null) {
         flag.value = true;
       } else {
@@ -141,7 +168,7 @@ const againGet = () => {
           if (bill[i].amount > 0) {
             income.value += bill[i].amount;
           } else {
-            spend.value += -bill[i].amount;
+            spend.value += bill[i].amount;
           }
         }
       }
@@ -182,8 +209,13 @@ const alerts = (data: any) => {
     name: "alters",
   });
 };
+//存钱罐
+let pigyg = ref(false);
+let num = ref();
+const defin = () => {
+  console.log(12);
+};
 </script>
-
 <style scoped>
 .bot {
   display: flex;

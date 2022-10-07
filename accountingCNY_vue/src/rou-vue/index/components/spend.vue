@@ -1,6 +1,6 @@
 <template>
   <!-- 支出 -->
-  <div class="grid grid-cols-4 gap-3 overflow-auto h-96">
+  <div class="grid grid-cols-4 gap-3 overflow-auto">
     <div
       v-for="(val, index) in spendData"
       :key="index"
@@ -9,7 +9,7 @@
       @touchend.prevent="pct(val)"
     >
       <div>
-        <span v-if="val.svgid == mode" class="flex h-3 w-3 absolute left-12">
+        <span v-if="val.id == mode" class="flex h-3 w-3 absolute left-12">
           <span
             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
           ></span>
@@ -49,11 +49,11 @@
             v-for="(value, index) in svgid.svgData"
             :key="index"
             class="m-4 flex flex-col items-center"
-            @click="changeMode(value.name, value.id)"
+            @click="change(value.name, value.id)"
           >
             <div>
               <span
-                v-if="value.id === mode"
+                v-if="value.id === modd"
                 class="flex h-3 w-3 absolute left-12"
               >
                 <span
@@ -182,6 +182,7 @@ import draggable from "vuedraggable";
 let spendSvg = ref([]); //接口接受数据
 let spendData = ref([]); //页面渲染数据
 let mode = ref();
+let modd = ref();
 let stoer = storebill(); //pinia状态数据
 let svgid = svg(); //pinia状态数据
 //查询接口
@@ -208,12 +209,17 @@ const againGet = () => {
 };
 againGet();
 //点击事件
-const changeMode = (itme: any, svgid: any) => {
-  mode.value = svgid;
+const changeMode = (itme: any, svgid: any, id: any) => {
+  mode.value = id;
   stoer.category.spend = itme;
   stoer.category.cate_id = svgid;
   stoer.category.sort = 0;
-  console.log(itme, svgid);
+  console.log(itme, svgid, id);
+};
+//添加
+const change = (itme: any, id: any) => {
+  console.log(itme, id);
+  modd.value = id;
 };
 //添加类型
 const dialogFormVisible = ref(false);
@@ -226,7 +232,7 @@ const add = () => {
   const dates = {
     name: form.name,
     sort: 0,
-    svgid: mode.value,
+    svgid: modd.value,
     user_id: Number(localStorage.getItem("userId")),
     sequencing: -1,
   };
@@ -265,7 +271,7 @@ const pct = (data: any) => {
   if (deTime - ddTime > 200) {
     revele.value = true;
   } else {
-    changeMode(data.name, data.svgid);
+    changeMode(data.name, data.svgid, data.id);
   }
 };
 //修改事件

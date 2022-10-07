@@ -1,57 +1,124 @@
 <template>
   <div class="login">
-    <div class="form">
-      <h1>LOGIN</h1>
-      <div class="user">
-        <img src="../../assets/img/login-img/username.png" />
-        <input v-model="data.name" type="text" placeholder="Username" />
-      </div>
-      <div class="pass">
-        <img src="../../assets/img/login-img/password.png" />
-        <input v-model="data.pws" type="text" placeholder="Password" />
-      </div>
-      <div class="enter">
-        <button @click="fa.dpush">登录</button>
-      </div>
-      <div class="chek">
-        <router-link to="/regsiter"><button>注册账号</button></router-link>
-      </div>
-    </div>
+    <div class="title"><h2>小猪记账本</h2></div>
+    <el-form
+      ref="ruleFormRef"
+      :model="ruleForm"
+      status-icon
+      :rules="rules"
+      class="demo-ruleForm"
+    >
+      <el-form-item label="" prop="name">
+        <el-input
+          v-model="ruleForm.name"
+          type="text"
+          autocomplete="off"
+          placeholder="请输入用户名"
+          clearable
+          :prefix-icon="User"
+        />
+      </el-form-item>
+      <el-form-item label="" prop="pass">
+        <el-input
+          v-model="ruleForm.pass"
+          type="password"
+          autocomplete="off"
+          placeholder="请输入密码"
+          clearable
+          show-password
+          :prefix-icon="GoodsFilled"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" class="btn" @click="submitForm(ruleFormRef)"
+          >登录</el-button
+        >
+      </el-form-item>
+      <el-form-item>
+        <el-button type="default" class="btn" @click="submitForm_zc()"
+          >注册</el-button
+        >
+      </el-form-item>
+    </el-form>
   </div>
 </template>
-
-<script setup lang="ts">
+<script lang="ts" setup>
+import { reactive, ref } from "vue";
+import type { FormInstance } from "element-plus";
+import { User, GoodsFilled } from "@element-plus/icons-vue";
 import { login, userId } from "../../axios/index";
-import { reactive } from "vue";
 import router from "@/router";
 import { ElMessage } from "element-plus";
+const ruleFormRef = ref<FormInstance>();
 
-const data = reactive({ name: "", pws: "" });
-const fa = reactive({
-  //登录接口
-  dpush() {
-    const da = { name: data.name, password: data.pws };
-    login(da)
-      .then((res) => {
-        if (res.data.code < 300) {
-          localStorage.setItem("name", data.name);
-          userId(data.name).then((res) => {
-            localStorage.setItem("userId", res.data.data);
-            open2();
-            router.push({
-              //编程式路由
-              name: "index",
-            });
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        open4();
-      });
-  },
+const validatePass = (rule: any, value: any, callback: any) => {
+  console.log(rule);
+  if (value === "") {
+    callback(new Error("请输入密码"));
+  } else {
+    if (ruleForm.name !== "") {
+      if (!ruleFormRef.value) return;
+      ruleFormRef.value.validateField("checkPass", () => null);
+    }
+    callback();
+  }
+};
+const validatePass2 = (rule: any, value: any, callback: any) => {
+  console.log(rule);
+  if (value === "") {
+    callback(new Error("请输入用户名"));
+  } else {
+    callback();
+  }
+};
+
+const ruleForm = reactive({
+  pass: "",
+  name: "",
 });
 
+const rules = reactive({
+  pass: [{ validator: validatePass, trigger: "blur" }],
+  name: [{ validator: validatePass2, trigger: "blur" }],
+});
+
+const submitForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formEl.validate((valid) => {
+    if (valid) {
+      console.log("submit!");
+      const da = { name: ruleForm.name, password: ruleForm.pass };
+      login(da)
+        .then((res) => {
+          console.log("登录");
+          if (res.data.code < 300) {
+            localStorage.setItem("name", da.name);
+            userId(da.name).then((res) => {
+              localStorage.setItem("userId", res.data.data);
+              open2();
+              router.push({
+                //编程式路由
+                name: "index",
+              });
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          open4();
+        });
+    } else {
+      console.log("error submit!");
+      return false;
+    }
+  });
+};
+// 注册
+const submitForm_zc = () => {
+  router.push({
+    name: "regsiter",
+  });
+};
 const open2 = () => {
   ElMessage({
     message: "登录成功",
@@ -61,72 +128,26 @@ const open2 = () => {
 
 const open4 = () => {
   ElMessage.error("登录失败");
+  ruleForm.name = "";
+  ruleForm.pass = "";
 };
 </script>
-
 <style scoped>
-img {
-  height: 25px;
-  width: 40px;
-}
-.form {
-  height: 100vh;
-  /* width: 400px; */
-  background-color: #ffffff;
-  border-radius: 30px;
-  /* box-shadow: 10px 10px 5px #9c9b99; */
+.login {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  background-image: url("@/assets/img/login-img/login.svg");
 }
-
-.form h1 {
-  margin-bottom: 70px;
-  font-size: 50px;
-  color: #000000;
+.title {
+  margin-bottom: 30px;
 }
-.user,
-.pass {
-  display: flex;
-  align-items: center;
+.demo-ruleForm {
+  width: 50%;
 }
-.user img,
-.pass img {
-  padding-right: 20px;
-}
-
-.enter,
-.user,
-.pass {
-  margin-top: 15px;
-}
-.enter button {
-  height: 30px;
-  width: 100px;
-  background-color: #edf6f5;
-  border-style: none;
-  cursor: pointer;
-}
-
-.user input,
-.pass input {
-  border-top-style: none;
-  border-right-style: none;
-  border-bottom-style: solid;
-  border-left-style: none;
-  border-color: #e7e7e7;
-  outline: none;
-}
-
-input::-webkit-input-placeholder {
-  color: #cacfce;
-  margin-left: 10px;
-}
-
-.chek button {
-  color: #d7c19e;
-  margin-top: 15px;
-  border: 0px;
+.btn {
+  width: 100%;
 }
 </style>

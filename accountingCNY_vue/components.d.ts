@@ -8,7 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Abc: typeof import('./src/components/abc.vue')['default']
-    ElAlert: typeof import("element-plus/es")["ElAlert"]
+    ElAlert: typeof import('element-plus/es')['ElAlert']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCheckbox: typeof import("element-plus/es")["ElCheckbox"]
@@ -21,6 +21,7 @@ declare module '@vue/runtime-core' {
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElImage: typeof import('element-plus/es')['ElImage']
     ElIn: typeof import("element-plus/es")["ElIn"]
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
@@ -28,6 +29,7 @@ declare module '@vue/runtime-core' {
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElRadio: typeof import("element-plus/es")["ElRadio"]
     ElRadioGroup: typeof import("element-plus/es")["ElRadioGroup"]
+    ElResult: typeof import('element-plus/es')['ElResult']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import("element-plus/es")["ElSelect"]
     ElSwitch: typeof import("element-plus/es")["ElSwitch"]

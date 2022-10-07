@@ -23,4 +23,19 @@ public class userSerivceImpl implements userService {
     public int getId(String name) {
         return userMapper.getId(name);
     }
+
+    @Override
+    public int register(user user) {
+        return userMapper.register(user);
+    }
+
+    @Override
+    public int updateuser(user user) {
+        return userMapper.updateuser(user);
+    }
+
+    @Override
+    public user getAll(int id) {
+        return userMapper.getAll(id);
+    }
 }

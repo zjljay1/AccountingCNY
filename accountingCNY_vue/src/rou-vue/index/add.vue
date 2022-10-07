@@ -7,9 +7,9 @@
       <div>
         <el-row>
           <el-button type="danger" color="#fff" round>
-            <router-link to="/sort"
-              ><Setting style="color: #111; width: 20px"
-            /></router-link>
+            <router-link to="/sort">
+              <img src="@/assets/img/waii/piyyg.svg" class="w-10 h-10" />
+            </router-link>
           </el-button>
         </el-row>
       </div>

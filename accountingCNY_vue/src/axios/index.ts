@@ -1,4 +1,4 @@
-import { Service } from "./api";
+import Service from "./api";
 
 //登录接口
 export const login = (data: any) => {
@@ -46,6 +46,7 @@ export const getAll = (id: Number) => {
   return Service({
     url: `/bill/get/${id}`,
     method: "get",
+    headers: { satoken: localStorage.getItem("token") },
   });
 };
 
@@ -54,6 +55,7 @@ export const deleteId = (id: Number) => {
   return Service({
     url: `/bill/deleteId/${id}`,
     method: "delete",
+    headers: { satoken: localStorage.getItem("token") },
   });
 };
 
@@ -131,6 +133,23 @@ export const updateuser = (data: any) => {
 export const getuserall = (id: any) => {
   return Service({
     url: `user/getAll/${id}`,
+    method: "get",
+  });
+};
+
+//添加存钱
+export const addpiggy = (data: any) => {
+  return Service({
+    url: "piggy/add",
+    method: "post",
+    data: JSON.stringify(data),
+  });
+};
+
+//查询存钱信息
+export const getupiggy = (id: any) => {
+  return Service({
+    url: `user/getpiggy/${id}`,
     method: "get",
   });
 };

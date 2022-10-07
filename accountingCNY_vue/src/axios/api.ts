@@ -1,7 +1,8 @@
+import router from "@/router";
 import axios from "axios";
 const ConfigBaseURL = "http://localhost:8089"; //默认路径
 //使用create方法创建axios实例
-export const Service = axios.create({
+const Service = axios.create({
   timeout: 3000, // 请求超时时间
   baseURL: ConfigBaseURL,
   headers: {
@@ -11,13 +12,37 @@ export const Service = axios.create({
   },
 });
 
-// axios.interceptors.request.use(
-//   function (config) {
-//     // 在发送请求之前做些什么
-//     return config;
-//   },
-//   function (error) {
-//     // 对请求错误做些什么
-//     return Promise.reject(error);
-//   },
-// );
+Service.interceptors.request.use(
+  function (config) {
+    console.log("请求拦截");
+    if (localStorage.getItem("token")) {
+      config.headers.Authorization = "JWT " + localStorage.getItem("token");
+    }
+    return config;
+  },
+  function (error) {
+    console.log(error);
+    return Promise.reject(error);
+  },
+);
+
+Service.interceptors.response.use(
+  function (config) {
+    console.log(config.data);
+    if (config.data.code == 509) {
+      localStorage.removeItem("token");
+      router.push({
+        name: "login",
+      });
+    } else if (localStorage.getItem("token") == null) {
+      localStorage.setItem("token", config.data.data.tokenValue);
+    }
+    return config;
+  },
+  function (error) {
+    console.log(error);
+    return error;
+  },
+);
+
+export default Service;

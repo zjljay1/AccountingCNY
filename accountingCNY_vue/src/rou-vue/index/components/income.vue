@@ -1,6 +1,6 @@
 <template>
   <!-- 收入 -->
-  <div class="grid grid-cols-4 gap-3 h-96 overflow-auto">
+  <div class="grid grid-cols-4 gap-3 overflow-auto">
     <div
       v-for="(value, index) in incomeData"
       :key="index"
@@ -295,7 +295,6 @@ const vote = () => {};
 const sorts = (data) => {
   sortF.value = false;
   let size = 0;
-  console.log(incomeData.value);
   for (let k = 0; k < incomeSvg.value.length; k++) {
     if (incomeSvg.value[k].sort == 1) {
       size++;
@@ -303,7 +302,6 @@ const sorts = (data) => {
   }
   for (let i = 0; i < size; i++) {
     data[i].sequencing = i;
-    console.log(data[i]);
     sort(data[i]).then((res) => {
       console.log(res);
     });

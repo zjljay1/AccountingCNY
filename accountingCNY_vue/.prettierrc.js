@@ -6,6 +6,7 @@ module.exports = {
   // 不使用缩进符，而使用空格
   useTabs: false,
   // 行尾添加分号
+  
   semi: true,
   // 使用单引号
   singleQuote: false,

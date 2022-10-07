@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="flex flex-col mt-2">
     <div class="flex justify-center">
       <div class="">
         <el-date-picker
@@ -15,14 +15,11 @@
         <el-input v-model="note" placeholder="备注" :clearable="false" />
       </div>
     </div>
-    <div class="flex justify-center mt-9">
-      <el-input
-        v-model="amount"
-        placeholder="输入金额"
-        :clearable="false"
-        class="acc"
-      />
-      <el-button type="primary" @click="push">确定</el-button>
+    <div class="flex justify-center mt-2">
+      <div class="mr-2">
+        <el-input v-model="amount" placeholder="输入金额" :clearable="false" />
+      </div>
+      <div><el-button type="primary" @click="push">确定</el-button></div>
     </div>
   </div>
 </template>
@@ -56,10 +53,10 @@ const push = () => {
 };
 </script>
 <style>
-.ass {
+/* .ass {
   width: 100px !important;
 }
 .acc {
   width: 200px !important;
-}
+} */
 </style>
